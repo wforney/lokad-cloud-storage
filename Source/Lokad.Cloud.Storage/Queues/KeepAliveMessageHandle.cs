@@ -1,48 +1,127 @@
 ﻿#region Copyright (c) Lokad 2009-2011
+
 // This code is released under the terms of the new BSD licence.
 // URL: http://www.lokad.com/
 #endregion
 
-using System;
-using System.Threading;
-
-namespace Lokad.Cloud.Storage
+namespace Lokad.Cloud.Storage.Queues
 {
+    using System;
+    using System.Threading;
+
+    /// <summary>
+    /// The keep alive message handle.
+    /// </summary>
+    /// <typeparam name="T">
+    /// </typeparam>
+    /// <remarks>
+    /// </remarks>
     public class KeepAliveMessageHandle<T> : IDisposable
         where T : class
     {
-        private readonly IQueueStorageProvider _storage;
-        private readonly Timer _timer;
+        #region Constants and Fields
 
+        /// <summary>
+        /// The storage.
+        /// </summary>
+        private readonly IQueueStorageProvider storage;
+
+        /// <summary>
+        /// The timer.
+        /// </summary>
+        private readonly Timer timer;
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="KeepAliveMessageHandle{T}"/> class. 
+        /// Initializes a new instance of the <see cref="KeepAliveMessageHandle&lt;T&gt;"/> class.
+        /// </summary>
+        /// <param name="message">
+        /// The message. 
+        /// </param>
+        /// <param name="storage">
+        /// The storage. 
+        /// </param>
+        /// <param name="keepAliveAfter">
+        /// The keep alive after. 
+        /// </param>
+        /// <param name="keepAlivePeriod">
+        /// The keep alive period. 
+        /// </param>
+        /// <remarks>
+        /// </remarks>
+        public KeepAliveMessageHandle(
+            T message, IQueueStorageProvider storage, TimeSpan keepAliveAfter, TimeSpan keepAlivePeriod)
+        {
+            this.storage = storage;
+            this.Message = message;
+
+            this.timer = new Timer(state => this.storage.KeepAlive(this.Message), null, keepAliveAfter, keepAlivePeriod);
+        }
+
+        #endregion
+
+        #region Public Properties
+
+        /// <summary>
+        ///   Gets the message.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
         public T Message { get; private set; }
 
-        public KeepAliveMessageHandle(T message, IQueueStorageProvider storage, TimeSpan keepAliveAfter, TimeSpan keepAlivePeriod)
-        {
-            _storage = storage;
-            Message = message;
+        #endregion
 
-            _timer = new Timer(state => _storage.KeepAlive(Message), null, keepAliveAfter, keepAlivePeriod);
-        }
+        #region Public Methods and Operators
 
-        public void Delete()
-        {
-            _storage.Delete(Message);
-        }
-
+        /// <summary>
+        /// Abandons this instance.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
         public void Abandon()
         {
-            _storage.Abandon(Message);
+            this.storage.Abandon(this.Message);
         }
 
+        /// <summary>
+        /// Deletes this instance.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        public void Delete()
+        {
+            this.storage.Delete(this.Message);
+        }
+
+        /// <summary>
+        /// Resumes the later.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
         public void ResumeLater()
         {
-            _storage.ResumeLater(Message);
+            this.storage.ResumeLater(this.Message);
         }
 
+        #endregion
+
+        #region Explicit Interface Methods
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
         void IDisposable.Dispose()
         {
-            _timer.Dispose();
-            _storage.Abandon(Message);
+            this.timer.Dispose();
+            this.storage.Abandon(this.Message);
         }
+
+        #endregion
     }
 }

@@ -6,6 +6,7 @@
 
 namespace Lokad.Cloud.Storage
 {
+    using Lokad.Cloud.Storage.Queues;
     using Lokad.Cloud.Storage.Tables;
 
     /// <summary>

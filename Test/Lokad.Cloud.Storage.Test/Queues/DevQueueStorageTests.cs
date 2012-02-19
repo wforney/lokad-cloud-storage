@@ -1,78 +1,59 @@
 ﻿#region Copyright (c) Lokad 2009-2011
+
 // This code is released under the terms of the new BSD licence.
 // URL: http://www.lokad.com/
 #endregion
 
-using System;
-using System.Linq;
-using Lokad.Cloud.Storage.Azure;
-using NUnit.Framework;
-
 namespace Lokad.Cloud.Storage.Test.Queues
 {
+    using System;
+    using System.Linq;
+
+    using Lokad.Cloud.Storage.Azure;
+    using Lokad.Cloud.Storage.Queues;
+
+    using NUnit.Framework;
+
+    /// <summary>
+    /// The dev queue storage tests.
+    /// </summary>
+    /// <remarks>
+    /// </remarks>
     [TestFixture]
     [Category("DevelopmentStorage")]
     public class DevQueueStorageTests : QueueStorageTests
     {
-        private static readonly Random _rand = new Random();
+        #region Constants and Fields
 
+        /// <summary>
+        /// The rand.
+        /// </summary>
+        private static readonly Random Rand = new Random();
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DevQueueStorageTests"/> class. 
+        ///   Initializes a new instance of the <see cref="T:System.Object"/> class.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
         public DevQueueStorageTests()
             : base(CloudStorage.ForDevelopmentStorage().BuildStorageProviders())
         {
         }
 
-        [Test]
-        public void PutGetDeleteOverflowing()
-        {
-            // 20k chosen so that it doesn't fit into the queue.
-            var message = new MyMessage { MyBuffer = new byte[80000] };
+        #endregion
 
-            // fill buffer with random content
-            _rand.NextBytes(message.MyBuffer);
+        #region Public Methods and Operators
 
-            QueueStorage.Clear(QueueName);
-
-            QueueStorage.Put(QueueName, message);
-            var retrieved = QueueStorage.Get<MyMessage>(QueueName, 1).First();
-
-            Assert.AreEqual(message.MyGuid, retrieved.MyGuid, "#A01");
-            CollectionAssert.AreEquivalent(message.MyBuffer, retrieved.MyBuffer, "#A02");
-
-            for (int i = 0; i < message.MyBuffer.Length; i++)
-            {
-                Assert.AreEqual(message.MyBuffer[i], retrieved.MyBuffer[i], "#A02-" + i);
-            }
-
-            QueueStorage.Delete(retrieved);
-        }
-
-        [Test]
-        public void DeleteRemovesOverflowingBlobs()
-        {
-            var queueName = "test1-" + Guid.NewGuid().ToString("N");
-
-            // CAUTION: we are now compressing serialization output.
-            // hence, we can't just pass an empty array, as it would be compressed at near 100%.
-
-            var data = new byte[80000];
-            _rand.NextBytes(data);
-
-            QueueStorage.Put(queueName, data);
-
-            // HACK: implicit pattern for listing overflowing messages
-            var overflowingCount =
-                BlobStorage.ListBlobNames(QueueStorageProvider.OverflowingMessagesContainerName, queueName).Count();
-
-            Assert.AreEqual(1, overflowingCount, "#A00");
-
-            QueueStorage.DeleteQueue(queueName);
-
-            overflowingCount =
-                BlobStorage.ListBlobNames(QueueStorageProvider.OverflowingMessagesContainerName, queueName).Count();
-
-            Assert.AreEqual(0, overflowingCount, "#A01");
-        }
-
+        /// <summary>
+        /// Clears the removes overflowing blobs.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
         [Test]
         public void ClearRemovesOverflowingBlobs()
         {
@@ -80,100 +61,171 @@ namespace Lokad.Cloud.Storage.Test.Queues
 
             // CAUTION: we are now compressing serialization output.
             // hence, we can't just pass an empty array, as it would be compressed at near 100%.
-
             var data = new byte[80000];
-            _rand.NextBytes(data);
+            Rand.NextBytes(data);
 
-            QueueStorage.Put(queueName, data);
+            this.QueueStorage.Put(queueName, data);
 
             // HACK: implicit pattern for listing overflowing messages
             var overflowingCount =
-                BlobStorage.ListBlobNames(QueueStorageProvider.OverflowingMessagesContainerName, queueName).Count();
+                this.BlobStorage.ListBlobNames(QueueStorageProvider.OverflowingMessagesContainerName, queueName).Count();
 
             Assert.AreEqual(1, overflowingCount, "#A00");
 
-            QueueStorage.Clear(queueName);
+            this.QueueStorage.Clear(queueName);
 
             overflowingCount =
-                BlobStorage.ListBlobNames(QueueStorageProvider.OverflowingMessagesContainerName, queueName).Count();
+                this.BlobStorage.ListBlobNames(QueueStorageProvider.OverflowingMessagesContainerName, queueName).Count();
 
             Assert.AreEqual(0, overflowingCount, "#A01");
 
-            QueueStorage.DeleteQueue(queueName);
+            this.QueueStorage.DeleteQueue(queueName);
         }
 
+        /// <summary>
+        /// Deletes the removes overflowing blobs.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
         [Test]
-        public void PersistRestoreOverflowing()
+        public void DeleteRemovesOverflowingBlobs()
         {
-            const string storeName = "TestStore";
+            var queueName = "test1-" + Guid.NewGuid().ToString("N");
 
             // CAUTION: we are now compressing serialization output.
             // hence, we can't just pass an empty array, as it would be compressed at near 100%.
-
             var data = new byte[80000];
-            _rand.NextBytes(data);
+            Rand.NextBytes(data);
+
+            this.QueueStorage.Put(queueName, data);
+
+            // HACK: implicit pattern for listing overflowing messages
+            var overflowingCount =
+                this.BlobStorage.ListBlobNames(QueueStorageProvider.OverflowingMessagesContainerName, queueName).Count();
+
+            Assert.AreEqual(1, overflowingCount, "#A00");
+
+            this.QueueStorage.DeleteQueue(queueName);
+
+            overflowingCount =
+                this.BlobStorage.ListBlobNames(QueueStorageProvider.OverflowingMessagesContainerName, queueName).Count();
+
+            Assert.AreEqual(0, overflowingCount, "#A01");
+        }
+
+        /// <summary>
+        /// Persists the restore overflowing.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        [Test]
+        public void PersistRestoreOverflowing()
+        {
+            const string StoreName = "TestStore";
+
+            // CAUTION: we are now compressing serialization output.
+            // hence, we can't just pass an empty array, as it would be compressed at near 100%.
+            var data = new byte[80000];
+            Rand.NextBytes(data);
 
             // clean up
-            QueueStorage.DeleteQueue(QueueName);
-            foreach (var skey in QueueStorage.ListPersisted(storeName))
+            this.QueueStorage.DeleteQueue(this.QueueName);
+            foreach (var skey in this.QueueStorage.ListPersisted(StoreName))
             {
-                QueueStorage.DeletePersisted(storeName, skey);
+                this.QueueStorage.DeletePersisted(StoreName, skey);
             }
 
             // put
-            QueueStorage.Put(QueueName, data);
+            this.QueueStorage.Put(this.QueueName, data);
 
             Assert.AreEqual(
-                1,
-                BlobStorage.ListBlobNames(QueueStorageProvider.OverflowingMessagesContainerName, QueueName).Count(),
+                1, 
+                this.BlobStorage.ListBlobNames(QueueStorageProvider.OverflowingMessagesContainerName, this.QueueName).Count(), 
                 "#A01");
 
             // get
-            var retrieved = QueueStorage.Get<byte[]>(QueueName, 1).First();
+            var retrieved = this.QueueStorage.Get<byte[]>(this.QueueName, 1).First();
 
             // persist
-            QueueStorage.Persist(retrieved, storeName, "manual test");
+            this.QueueStorage.Persist(retrieved, StoreName, "manual test");
 
             Assert.AreEqual(
-                1,
-                BlobStorage.ListBlobNames(QueueStorageProvider.OverflowingMessagesContainerName, QueueName).Count(),
+                1, 
+                this.BlobStorage.ListBlobNames(QueueStorageProvider.OverflowingMessagesContainerName, this.QueueName).Count(), 
                 "#A02");
 
             // abandon should fail (since not invisible anymore)
-            Assert.IsFalse(QueueStorage.Abandon(retrieved), "#A03");
+            Assert.IsFalse(this.QueueStorage.Abandon(retrieved), "#A03");
 
             // list persisted message
-            var key = QueueStorage.ListPersisted(storeName).Single();
+            var key = this.QueueStorage.ListPersisted(StoreName).Single();
 
             // get persisted message
-            var persisted = QueueStorage.GetPersisted(storeName, key);
+            var persisted = this.QueueStorage.GetPersisted(StoreName, key);
             Assert.IsTrue(persisted.HasValue, "#A04");
             Assert.IsTrue(persisted.Value.DataXml.HasValue, "#A05");
 
             // delete persisted message
-            QueueStorage.DeletePersisted(storeName, key);
+            this.QueueStorage.DeletePersisted(StoreName, key);
 
             Assert.AreEqual(
-                0,
-                BlobStorage.ListBlobNames(QueueStorageProvider.OverflowingMessagesContainerName, QueueName).Count(),
+                0, 
+                this.BlobStorage.ListBlobNames(QueueStorageProvider.OverflowingMessagesContainerName, this.QueueName).Count(), 
                 "#A06");
 
             // list no longer contains key
-            Assert.IsFalse(QueueStorage.ListPersisted(storeName).Any(), "#A07");
+            Assert.IsFalse(this.QueueStorage.ListPersisted(StoreName).Any(), "#A07");
         }
 
+        /// <summary>
+        /// Puts the get delete overflowing.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        [Test]
+        public void PutGetDeleteOverflowing()
+        {
+            // 20k chosen so that it doesn't fit into the queue.
+            var message = new MyMessage { MyBuffer = new byte[80000] };
+
+            // fill buffer with random content
+            Rand.NextBytes(message.MyBuffer);
+
+            this.QueueStorage.Clear(this.QueueName);
+
+            this.QueueStorage.Put(this.QueueName, message);
+            var retrieved = this.QueueStorage.Get<MyMessage>(this.QueueName, 1).First();
+
+            Assert.AreEqual(message.MyGuid, retrieved.MyGuid, "#A01");
+            CollectionAssert.AreEquivalent(message.MyBuffer, retrieved.MyBuffer, "#A02");
+
+            for (var i = 0; i < message.MyBuffer.Length; i++)
+            {
+                Assert.AreEqual(message.MyBuffer[i], retrieved.MyBuffer[i], "#A02-" + i);
+            }
+
+            this.QueueStorage.Delete(retrieved);
+        }
+
+        /// <summary>
+        /// Queues the latency.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
         [Test]
         public void QueueLatency()
         {
-            Assert.IsFalse(QueueStorage.GetApproximateLatency(QueueName).HasValue);
+            Assert.IsFalse(this.QueueStorage.GetApproximateLatency(this.QueueName).HasValue);
 
-            QueueStorage.Put(QueueName, 100);
+            this.QueueStorage.Put(this.QueueName, 100);
 
-            var latency = QueueStorage.GetApproximateLatency(QueueName);
+            var latency = this.QueueStorage.GetApproximateLatency(this.QueueName);
             Assert.IsTrue(latency.HasValue);
             Assert.IsTrue(latency.Value >= TimeSpan.Zero && latency.Value < TimeSpan.FromMinutes(10));
 
-            QueueStorage.Delete(100);
+            this.QueueStorage.Delete(100);
         }
+
+        #endregion
     }
 }

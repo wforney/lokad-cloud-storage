@@ -6,6 +6,8 @@
 
 namespace Lokad.Cloud.Storage.Autofac
 {
+    using Lokad.Cloud.Storage.Queues;
+
     using global::Autofac;
 
     using Lokad.Cloud.Storage.InMemory;
