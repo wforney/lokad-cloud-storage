@@ -12,6 +12,8 @@ using System.Linq;
 
 namespace Lokad.Cloud.Storage
 {
+    using Lokad.Cloud.Storage.Shared.Monads;
+
     /// <summary>Helper extensions methods for storage providers.</summary>
     public static class QueueStorageExtensions
     {

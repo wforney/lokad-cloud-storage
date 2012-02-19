@@ -64,6 +64,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AzureCloudStorageBuilder.cs" />
     <Compile Include="DelegateFormatter.cs" />
     <Compile Include="Azure\RetryPolicies.cs" />
     <Compile Include="Azure\BlobStorageProvider.cs" />
@@ -89,6 +90,7 @@
     <Compile Include="Documents\CompressedBinaryDocumentSet.cs" />
     <Compile Include="Documents\DocumentSet.cs" />
     <Compile Include="Documents\IDocumentSet.cs" />
+    <Compile Include="InMemoryStorageBuilder.cs" />
     <Compile Include="Instrumentation\Events\MessagesRevivedEvent.cs" />
     <Compile Include="Instrumentation\StorageEventLevel.cs" />
     <Compile Include="Queues\KeepAliveMessageHandle.cs" />

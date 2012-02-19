@@ -21,6 +21,8 @@ using Microsoft.WindowsAzure.StorageClient.Protocol;
 
 namespace Lokad.Cloud.Storage.Azure
 {
+    using Lokad.Cloud.Storage.Shared.Monads;
+
     /// <summary>Provides access to the Blob Storage.</summary>
     /// <remarks>
     /// All the methods of <see cref="BlobStorageProvider"/> are thread-safe.

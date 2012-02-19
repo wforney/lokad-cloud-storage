@@ -11,6 +11,8 @@ using Tu = System.Tuple<string, object, System.Collections.Generic.List<byte[]>>
 
 namespace Lokad.Cloud.Storage.InMemory
 {
+    using Lokad.Cloud.Storage.Shared.Monads;
+
     /// <summary>Mock in-memory Queue Storage.</summary>
     public class MemoryQueueStorageProvider : IQueueStorageProvider
     {

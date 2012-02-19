@@ -1,6 +1,6 @@
 // Imported from Lokad.Shared, 2011-02-08
 
-namespace Lokad.Cloud.Storage
+namespace Lokad.Cloud.Storage.Shared.Monads
 {
     /// <summary> Helper class for creating <see cref="Result{T}"/> instances </summary>
     public static class Result

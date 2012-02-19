@@ -10,6 +10,8 @@ using NUnit.Framework;
 
 namespace Lokad.Cloud.Storage.Test.Shared.Monads
 {
+    using Lokad.Cloud.Storage.Shared.Monads;
+
     [TestFixture]
     public sealed class MaybeTests
     {

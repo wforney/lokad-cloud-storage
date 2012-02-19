@@ -12,6 +12,8 @@ using NUnit.Framework;
 
 namespace Lokad.Cloud.Storage.Test.Blobs
 {
+    using Lokad.Cloud.Storage.Shared.Monads;
+
     [TestFixture]
     public abstract class BlobStorageTests
     {

@@ -9,6 +9,8 @@ using System.Xml.Linq;
 
 namespace Lokad.Cloud.Storage
 {
+    using Lokad.Cloud.Storage.Shared.Monads;
+
     /// <summary>Abstraction for the Blob Storage.</summary>
     /// <remarks>
     /// This provider represents a <em>logical</em> blob storage, not the actual

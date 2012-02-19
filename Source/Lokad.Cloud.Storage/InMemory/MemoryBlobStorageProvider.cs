@@ -11,6 +11,8 @@ using System.Xml.Linq;
 
 namespace Lokad.Cloud.Storage.InMemory
 {
+    using Lokad.Cloud.Storage.Shared.Monads;
+
     /// <summary>Mock in-memory Blob Storage.</summary>
     /// <remarks>
     /// All the methods of <see cref="MemoryBlobStorageProvider"/> are thread-safe.

@@ -11,6 +11,8 @@ namespace Lokad.Cloud.Storage
     using System.Runtime.Serialization;
     using System.Xml.Linq;
 
+    using Lokad.Cloud.Storage.Shared.Monads;
+
     /// <summary>
     /// The data serializer extensions.
     /// </summary>

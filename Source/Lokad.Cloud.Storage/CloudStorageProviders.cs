@@ -6,6 +6,8 @@
 
 namespace Lokad.Cloud.Storage
 {
+    using Lokad.Cloud.Storage.Tables;
+
     /// <summary>
     /// Storage providers and runtime providers.
     /// </summary>

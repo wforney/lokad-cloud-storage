@@ -8,6 +8,8 @@ using NUnit.Framework;
 
 namespace Lokad.Cloud.Storage.Test.Tables
 {
+    using Lokad.Cloud.Storage.Tables;
+
     [TestFixture]
     public class CloudTableTests
     {

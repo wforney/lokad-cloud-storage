@@ -18,6 +18,8 @@ using Microsoft.WindowsAzure.StorageClient;
 
 namespace Lokad.Cloud.Storage.Azure
 {
+    using Lokad.Cloud.Storage.Shared.Monads;
+
     /// <summary>Provides access to the Queue Storage (plus the Blob Storage when
     /// messages are overflowing).</summary>
     /// <remarks>

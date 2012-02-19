@@ -13,6 +13,8 @@ using System.Text.RegularExpressions;
 
 namespace Lokad.Cloud.Storage
 {
+    using Lokad.Cloud.Storage.Shared.Monads;
+
     /// <summary>Helpers for the <see cref="IBlobStorageProvider"/>.</summary>
     public static class BlobStorageExtensions
     {
