@@ -12,8 +12,6 @@ namespace Lokad.Cloud.Storage.Queues
     /// <summary>
     /// The purpose of the <see cref="MessageWrapper"/> is to gracefully handle messages that are too large of the queue storage (or messages that happen to be already stored in the Blob Storage).
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     [DataContract(Namespace = "http://schemas.lokad.com/lokad-cloud/storage/2.0")]
     [Serializable]
     internal sealed class MessageWrapper
@@ -24,8 +22,6 @@ namespace Lokad.Cloud.Storage.Queues
         ///   Gets or sets the name of the BLOB.
         /// </summary>
         /// <value> The name of the BLOB. </value>
-        /// <remarks>
-        /// </remarks>
         [DataMember(Order = 2)]
         public string BlobName { get; set; }
 
@@ -33,8 +29,6 @@ namespace Lokad.Cloud.Storage.Queues
         ///   Gets or sets the name of the container.
         /// </summary>
         /// <value> The name of the container. </value>
-        /// <remarks>
-        /// </remarks>
         [DataMember(Order = 1)]
         public string ContainerName { get; set; }
 

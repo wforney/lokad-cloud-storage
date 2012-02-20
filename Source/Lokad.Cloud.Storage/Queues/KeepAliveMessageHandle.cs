@@ -10,24 +10,23 @@ namespace Lokad.Cloud.Storage.Queues
     using System.Threading;
 
     /// <summary>
-    /// The keep alive message handle.
+    /// The keep alive message handle of type T.
     /// </summary>
     /// <typeparam name="T">
+    /// The type. 
     /// </typeparam>
-    /// <remarks>
-    /// </remarks>
     public class KeepAliveMessageHandle<T> : IDisposable
         where T : class
     {
         #region Constants and Fields
 
         /// <summary>
-        /// The storage.
+        ///   The storage.
         /// </summary>
         private readonly IQueueStorageProvider storage;
 
         /// <summary>
-        /// The timer.
+        ///   The timer.
         /// </summary>
         private readonly Timer timer;
 
@@ -37,7 +36,6 @@ namespace Lokad.Cloud.Storage.Queues
 
         /// <summary>
         /// Initializes a new instance of the <see cref="KeepAliveMessageHandle{T}"/> class. 
-        /// Initializes a new instance of the <see cref="KeepAliveMessageHandle&lt;T&gt;"/> class.
         /// </summary>
         /// <param name="message">
         /// The message. 
@@ -51,8 +49,6 @@ namespace Lokad.Cloud.Storage.Queues
         /// <param name="keepAlivePeriod">
         /// The keep alive period. 
         /// </param>
-        /// <remarks>
-        /// </remarks>
         public KeepAliveMessageHandle(
             T message, IQueueStorageProvider storage, TimeSpan keepAliveAfter, TimeSpan keepAlivePeriod)
         {
@@ -69,8 +65,6 @@ namespace Lokad.Cloud.Storage.Queues
         /// <summary>
         ///   Gets the message.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         public T Message { get; private set; }
 
         #endregion
@@ -80,8 +74,6 @@ namespace Lokad.Cloud.Storage.Queues
         /// <summary>
         /// Abandons this instance.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         public void Abandon()
         {
             this.storage.Abandon(this.Message);
@@ -90,8 +82,6 @@ namespace Lokad.Cloud.Storage.Queues
         /// <summary>
         /// Deletes this instance.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         public void Delete()
         {
             this.storage.Delete(this.Message);
@@ -100,8 +90,6 @@ namespace Lokad.Cloud.Storage.Queues
         /// <summary>
         /// Resumes the later.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         public void ResumeLater()
         {
             this.storage.ResumeLater(this.Message);
@@ -114,8 +102,6 @@ namespace Lokad.Cloud.Storage.Queues
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         void IDisposable.Dispose()
         {
             this.timer.Dispose();

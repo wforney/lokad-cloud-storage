@@ -18,8 +18,6 @@ namespace Lokad.Cloud.Storage.Queues
     /// <summary>
     /// Helper extensions methods for storage providers.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     public static class QueueStorageExtensions
     {
         #region Public Methods and Operators
@@ -30,10 +28,8 @@ namespace Lokad.Cloud.Storage.Queues
         /// <typeparam name="T">
         /// </typeparam>
         /// <param name="provider">
-        /// The provider. 
+        /// The provider.
         /// </param>
-        /// <remarks>
-        /// </remarks>
         public static void Clear<T>(this IQueueStorageProvider provider)
         {
             provider.Clear(GetDefaultStorageName(typeof(T)));
@@ -45,13 +41,11 @@ namespace Lokad.Cloud.Storage.Queues
         /// <typeparam name="T">
         /// </typeparam>
         /// <param name="provider">
-        /// The provider. 
+        /// The provider.
         /// </param>
         /// <returns>
         /// <c>true</c> if the queue name has been actually deleted. 
         /// </returns>
-        /// <remarks>
-        /// </remarks>
         public static bool DeleteQueue<T>(this IQueueStorageProvider provider)
         {
             return provider.DeleteQueue(GetDefaultStorageName(typeof(T)));
@@ -75,8 +69,6 @@ namespace Lokad.Cloud.Storage.Queues
         /// <returns>
         /// Enumeration of messages, possibly empty. 
         /// </returns>
-        /// <remarks>
-        /// </remarks>
         public static IEnumerable<T> Get<T>(this IQueueStorageProvider provider, string queueName, int count)
         {
             return provider.Get<T>(queueName, count, new TimeSpan(2, 0, 0), 5);
@@ -98,13 +90,12 @@ namespace Lokad.Cloud.Storage.Queues
         /// Maximal number of messages to be retrieved. 
         /// </param>
         /// <param name="maxProcessingTrials">
-        /// Maximum number of message processing trials, before the message is considered as being poisonous, removed from the queue and persisted to the 'failing-messages' store. 
+        /// Maximum number of message processing trials, before the message is considered as
+        /// being poisonous, removed from the queue and persisted to the 'failing-messages' store.
         /// </param>
         /// <returns>
         /// Enumeration of messages, possibly empty. 
         /// </returns>
-        /// <remarks>
-        /// </remarks>
         public static IEnumerable<T> Get<T>(
             this IQueueStorageProvider provider, string queueName, int count, int maxProcessingTrials)
         {
@@ -118,22 +109,22 @@ namespace Lokad.Cloud.Storage.Queues
         /// Type of the messages. 
         /// </typeparam>
         /// <param name="provider">
-        /// The provider. 
+        /// The provider.
         /// </param>
         /// <param name="count">
         /// Maximal number of messages to be retrieved. 
         /// </param>
         /// <param name="visibilityTimeout">
-        /// The visibility timeout, indicating when the not yet deleted message should become visible in the queue again. 
+        /// The visibility timeout, indicating when the not yet deleted message should
+        /// become visible in the queue again.
         /// </param>
         /// <param name="maxProcessingTrials">
-        /// Maximum number of message processing trials, before the message is considered as being poisonous, removed from the queue and persisted to the 'failing-messages' store. 
+        /// Maximum number of message processing trials, before the message is considered as
+        /// being poisonous, removed from the queue and persisted to the 'failing-messages' store.
         /// </param>
         /// <returns>
         /// Enumeration of messages, possibly empty. 
         /// </returns>
-        /// <remarks>
-        /// </remarks>
         public static IEnumerable<T> Get<T>(
             this IQueueStorageProvider provider, int count, TimeSpan visibilityTimeout, int maxProcessingTrials)
         {
@@ -155,8 +146,6 @@ namespace Lokad.Cloud.Storage.Queues
         /// <returns>
         /// Enumeration of messages, possibly empty. 
         /// </returns>
-        /// <remarks>
-        /// </remarks>
         public static IEnumerable<T> Get<T>(this IQueueStorageProvider provider, int count)
         {
             return provider.Get<T>(GetDefaultStorageName(typeof(T)), count, new TimeSpan(2, 0, 0), 5);
@@ -175,13 +164,12 @@ namespace Lokad.Cloud.Storage.Queues
         /// Maximal number of messages to be retrieved. 
         /// </param>
         /// <param name="maxProcessingTrials">
-        /// Maximum number of message processing trials, before the message is considered as being poisonous, removed from the queue and persisted to the 'failing-messages' store. 
+        /// Maximum number of message processing trials, before the message is considered as
+        /// being poisonous, removed from the queue and persisted to the 'failing-messages' store.
         /// </param>
         /// <returns>
         /// Enumeration of messages, possibly empty. 
         /// </returns>
-        /// <remarks>
-        /// </remarks>
         public static IEnumerable<T> Get<T>(this IQueueStorageProvider provider, int count, int maxProcessingTrials)
         {
             return provider.Get<T>(GetDefaultStorageName(typeof(T)), count, new TimeSpan(2, 0, 0), maxProcessingTrials);
@@ -191,15 +179,14 @@ namespace Lokad.Cloud.Storage.Queues
         /// Gets the approximate number of items in a queue (derived from the message type T).
         /// </summary>
         /// <typeparam name="T">
+		/// The type.
         /// </typeparam>
         /// <param name="provider">
-        /// The provider. 
+        /// The provider.
         /// </param>
         /// <returns>
-        /// The get approximate count.
+        /// The approximate count.
         /// </returns>
-        /// <remarks>
-        /// </remarks>
         public static int GetApproximateCount<T>(this IQueueStorageProvider provider)
         {
             return provider.GetApproximateCount(GetDefaultStorageName(typeof(T)));
@@ -209,14 +196,14 @@ namespace Lokad.Cloud.Storage.Queues
         /// Gets the approximate age of the top message in a queue (derived from the message type T).
         /// </summary>
         /// <typeparam name="T">
+        /// The type.
         /// </typeparam>
         /// <param name="provider">
-        /// The provider. 
+        /// The provider.
         /// </param>
         /// <returns>
+		/// A time span.
         /// </returns>
-        /// <remarks>
-        /// </remarks>
         public static Maybe<TimeSpan> GetApproximateLatency<T>(this IQueueStorageProvider provider)
         {
             return provider.GetApproximateLatency(GetDefaultStorageName(typeof(T)));
@@ -226,13 +213,14 @@ namespace Lokad.Cloud.Storage.Queues
         /// Gets the default name of the storage.
         /// </summary>
         /// <param name="type">
-        /// The type. 
+        /// The type.
         /// </param>
         /// <returns>
-        /// The get default storage name.
+        /// The default storage name.
         /// </returns>
-        /// <remarks>
-        /// </remarks>
+        /// <exception cref="ArgumentOutOfRangeException">
+		/// The type name is too long for auto-naming.
+        /// </exception>
         public static string GetDefaultStorageName(Type type)
         {
             Debug.Assert(type.FullName != null, "type.FullName != null");
@@ -253,21 +241,19 @@ namespace Lokad.Cloud.Storage.Queues
         /// <typeparam name="T">
         /// </typeparam>
         /// <param name="provider">
-        /// The provider. 
+        /// The provider.
         /// </param>
         /// <param name="queueName">
-        /// Name of the queue. 
+        /// The name of the queue. 
         /// </param>
         /// <param name="keepAliveAfter">
-        /// The keep alive after. 
+        /// The keep alive after.
         /// </param>
         /// <param name="maxProcessingTrials">
-        /// The max processing trials. 
+        /// The max processing trials.
         /// </param>
         /// <returns>
         /// </returns>
-        /// <remarks>
-        /// </remarks>
         public static KeepAliveMessageHandle<T> GetResilient<T>(
             this IQueueStorageProvider provider, string queueName, TimeSpan keepAliveAfter, int maxProcessingTrials)
             where T : class
@@ -288,15 +274,13 @@ namespace Lokad.Cloud.Storage.Queues
         /// <typeparam name="T">
         /// </typeparam>
         /// <param name="provider">
-        /// The provider. 
+        /// The provider.
         /// </param>
         /// <param name="queueName">
-        /// Name of the queue. 
+        /// The name of the queue.
         /// </param>
         /// <returns>
         /// </returns>
-        /// <remarks>
-        /// </remarks>
         public static KeepAliveMessageHandle<T> GetResilient<T>(this IQueueStorageProvider provider, string queueName)
             where T : class
         {
@@ -309,18 +293,16 @@ namespace Lokad.Cloud.Storage.Queues
         /// <typeparam name="T">
         /// </typeparam>
         /// <param name="provider">
-        /// The provider. 
+        /// The provider.
         /// </param>
         /// <param name="keepAliveAfter">
-        /// The keep alive after. 
+        /// The keep alive after.
         /// </param>
         /// <param name="maxProcessingTrials">
-        /// The max processing trials. 
+        /// The max processing trials.
         /// </param>
         /// <returns>
         /// </returns>
-        /// <remarks>
-        /// </remarks>
         public static KeepAliveMessageHandle<T> GetResilient<T>(
             this IQueueStorageProvider provider, TimeSpan keepAliveAfter, int maxProcessingTrials) where T : class
         {
@@ -333,12 +315,10 @@ namespace Lokad.Cloud.Storage.Queues
         /// <typeparam name="T">
         /// </typeparam>
         /// <param name="provider">
-        /// The provider. 
+        /// The provider.
         /// </param>
         /// <returns>
         /// </returns>
-        /// <remarks>
-        /// </remarks>
         public static KeepAliveMessageHandle<T> GetResilient<T>(this IQueueStorageProvider provider) where T : class
         {
             return GetResilient<T>(provider, GetDefaultStorageName(typeof(T)), TimeSpan.FromSeconds(90), 5);
@@ -350,13 +330,11 @@ namespace Lokad.Cloud.Storage.Queues
         /// <typeparam name="T">
         /// </typeparam>
         /// <param name="provider">
-        /// The provider. 
+        /// The provider.
         /// </param>
         /// <param name="message">
-        /// The message. 
+        /// The message.
         /// </param>
-        /// <remarks>
-        /// </remarks>
         public static void Put<T>(this IQueueStorageProvider provider, T message)
         {
             provider.Put(GetDefaultStorageName(typeof(T)), message);
@@ -369,7 +347,7 @@ namespace Lokad.Cloud.Storage.Queues
         /// Type of the messages. 
         /// </typeparam>
         /// <param name="provider">
-        /// The provider. 
+        /// The provider.
         /// </param>
         /// <param name="messages">
         /// Messages to be put. 
@@ -389,7 +367,7 @@ namespace Lokad.Cloud.Storage.Queues
         /// Type of the messages. 
         /// </typeparam>
         /// <param name="provider">
-        /// The provider. 
+        /// The provider.
         /// </param>
         /// <param name="messages">
         /// Messages to be put. 

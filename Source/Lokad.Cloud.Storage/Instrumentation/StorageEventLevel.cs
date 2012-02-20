@@ -9,8 +9,6 @@ namespace Lokad.Cloud.Storage.Instrumentation
     /// <summary>
     /// The storage event level.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     public enum StorageEventLevel
     {
         /// <summary>

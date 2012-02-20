@@ -26,10 +26,9 @@ namespace Lokad.Cloud.Storage.Tables
         /// Name of the table. 
         /// </param>
         /// <returns>
-        /// <c>true</c> if a new table has been created. <c>false</c> if the table already exists. 
+        /// <c>true</c> if a new table has been created.
+		/// <c>false</c> if the table already exists.
         /// </returns>
-        /// <remarks>
-        /// </remarks>
         bool CreateTable(string tableName);
 
         /// <summary>
@@ -108,10 +107,9 @@ namespace Lokad.Cloud.Storage.Tables
         /// Name of the table. 
         /// </param>
         /// <returns>
-        /// <c>true</c> if the table has been deleted. <c>false</c> if the table does not exist. 
+        /// <c>true</c> if the table has been deleted.
+		/// <c>false</c> if the table does not exist.
         /// </returns>
-        /// <remarks>
-        /// </remarks>
         bool DeleteTable(string tableName);
 
         /// <summary>

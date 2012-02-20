@@ -9,10 +9,8 @@ namespace Lokad.Cloud.Storage.Instrumentation
     using System.Xml.Linq;
 
     /// <summary>
-    /// The i storage event.
+    /// The storage event interface.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     public interface IStorageEvent
     {
         #region Public Properties
@@ -20,8 +18,6 @@ namespace Lokad.Cloud.Storage.Instrumentation
         /// <summary>
         ///   Gets the level.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         StorageEventLevel Level { get; }
 
         #endregion
@@ -34,8 +30,6 @@ namespace Lokad.Cloud.Storage.Instrumentation
         /// <returns>
         /// The describe.
         /// </returns>
-        /// <remarks>
-        /// </remarks>
         string Describe();
 
         /// <summary>
@@ -44,8 +38,6 @@ namespace Lokad.Cloud.Storage.Instrumentation
         /// <returns>
         /// The XML.
         /// </returns>
-        /// <remarks>
-        /// </remarks>
         XElement DescribeMeta();
 
         #endregion

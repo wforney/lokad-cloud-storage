@@ -9,31 +9,31 @@ namespace Lokad.Cloud.Storage.Instrumentation
     using System;
 
     /// <summary>
-    /// Cloud storage observer that implements a hot Rx Observable, forwarding all events synchronously (similar to Rx's FastSubject). Use this class if you want an easy way to observe Lokad.Cloud.Storage using Rx. Alternatively you can implement your own storage observer instead, or not use any observers at all.
+    /// Cloud storage observer that implements a hot Rx Observable, forwarding all events synchronously
+    /// (similar to Rx's FastSubject). Use this class if you want an easy way to observe Lokad.Cloud.Storage
+    /// using Rx. Alternatively you can implement your own storage observer instead, or not use any observers at all.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     public class StorageObserverSubject : IStorageObserver, IObservable<IStorageEvent>, IDisposable
     {
         #region Constants and Fields
 
         /// <summary>
-        /// The fixed observers.
+        ///   The fixed observers.
         /// </summary>
         private readonly IObserver<IStorageEvent>[] fixedObservers;
 
         /// <summary>
-        /// The sync.
+        ///   The sync.
         /// </summary>
         private readonly object sync = new object();
 
         /// <summary>
-        /// The is disposed.
+        ///   The is disposed.
         /// </summary>
         private bool isDisposed;
 
         /// <summary>
-        /// The observers.
+        ///   The observers.
         /// </summary>
         private IObserver<IStorageEvent>[] observers;
 
@@ -42,13 +42,11 @@ namespace Lokad.Cloud.Storage.Instrumentation
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="StorageObserverSubject"/> class.
+        /// Initializes a new instance of the <see cref="StorageObserverSubject"/> class. The storage observer subject.
         /// </summary>
         /// <param name="fixedObservers">
-        /// The fixed observers. 
+        /// Optional externally managed fixed observers, will neither be completed nor disposed by this class. 
         /// </param>
-        /// <remarks>
-        /// </remarks>
         public StorageObserverSubject(IObserver<IStorageEvent>[] fixedObservers = null)
         {
             this.fixedObservers = fixedObservers ?? new IObserver<IStorageEvent>[0];
@@ -62,8 +60,6 @@ namespace Lokad.Cloud.Storage.Instrumentation
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         public void Dispose()
         {
             lock (this.sync)
@@ -82,8 +78,6 @@ namespace Lokad.Cloud.Storage.Instrumentation
         /// <returns>
         /// A disposable interface.
         /// </returns>
-        /// <remarks>
-        /// </remarks>
         public IDisposable Subscribe(IObserver<IStorageEvent> observer)
         {
             if (this.isDisposed)
@@ -118,8 +112,9 @@ namespace Lokad.Cloud.Storage.Instrumentation
         /// <param name="storageEvent">
         /// The storage event. 
         /// </param>
-        /// <remarks>
-        /// </remarks>
+        /// <exception cref="ObjectDisposedException">
+		/// The object is disposed.
+        /// </exception>
         void IStorageObserver.Notify(IStorageEvent storageEvent)
         {
             if (this.isDisposed)
@@ -128,7 +123,7 @@ namespace Lokad.Cloud.Storage.Instrumentation
                 throw new ObjectDisposedException("StorageObserverSubject");
             }
 
-            // Assuming storageEvent observers are light - else we may want to do this async
+            // Assuming event observers are light - else we may want to do this async
             foreach (var observer in this.fixedObservers)
             {
                 observer.OnNext(storageEvent);
@@ -147,19 +142,17 @@ namespace Lokad.Cloud.Storage.Instrumentation
         /// <summary>
         /// The subscription.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         private class Subscription : IDisposable
         {
             #region Constants and Fields
 
             /// <summary>
-            /// The subject.
+            ///   The subject.
             /// </summary>
             private readonly StorageObserverSubject subject;
 
             /// <summary>
-            /// The observer.
+            ///   The observer.
             /// </summary>
             private IObserver<IStorageEvent> observer;
 
@@ -176,8 +169,6 @@ namespace Lokad.Cloud.Storage.Instrumentation
             /// <param name="observer">
             /// The observer. 
             /// </param>
-            /// <remarks>
-            /// </remarks>
             public Subscription(StorageObserverSubject subject, IObserver<IStorageEvent> observer)
             {
                 this.subject = subject;
@@ -191,8 +182,6 @@ namespace Lokad.Cloud.Storage.Instrumentation
             /// <summary>
             /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
             /// </summary>
-            /// <remarks>
-            /// </remarks>
             public void Dispose()
             {
                 if (this.observer != null)

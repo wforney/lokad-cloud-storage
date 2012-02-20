@@ -9,8 +9,6 @@ namespace Lokad.Cloud.Storage.Instrumentation
     /// <summary>
     /// The storage observer interface.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     public interface IStorageObserver
     {
         #region Public Methods and Operators
@@ -18,8 +16,9 @@ namespace Lokad.Cloud.Storage.Instrumentation
         /// <summary>
         /// Notifies the specified storage event.
         /// </summary>
-        /// <param name="storageEvent">The storage event.</param>
-        /// <remarks></remarks>
+        /// <param name="storageEvent">
+        /// The storage event.
+        /// </param>
         void Notify(IStorageEvent storageEvent);
 
         #endregion

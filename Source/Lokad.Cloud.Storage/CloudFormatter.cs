@@ -16,10 +16,13 @@ namespace Lokad.Cloud.Storage
     using System.Xml.Linq;
 
     /// <summary>
-    /// Formatter based on <c>DataContractSerializer</c> and <c>NetDataContractSerializer</c> . The formatter targets storage of persistent or transient data in the cloud storage.
+    /// Formatter based on <c>DataContractSerializer</c> and <c>NetDataContractSerializer</c>. 
+    /// The formatter targets storage of persistent or transient data in the cloud storage.
     /// </summary>
     /// <remarks>
-    /// If a <c>DataContract</c> attribute is present, then the <c>DataContractSerializer</c> is favored. If not, then the <c>NetDataContractSerializer</c> is used instead. This class is not <b>thread-safe</b> .
+    /// If a <c>DataContract</c> attribute is present, then the <c>DataContractSerializer</c>
+    /// is favored. If not, then the <c>NetDataContractSerializer</c> is used instead.
+    /// This class is not <b>thread-safe</b>.
     /// </remarks>
     public class CloudFormatter : IIntermediateDataSerializer
     {
@@ -32,13 +35,11 @@ namespace Lokad.Cloud.Storage
         /// The source stream. 
         /// </param>
         /// <param name="type">
-        /// The type of the object to deserialize. 
+        /// The type of the object to deserialize.
         /// </param>
         /// <returns>
-        /// deserialized object 
+        /// The deserialized object. 
         /// </returns>
-        /// <remarks>
-        /// </remarks>
         public object Deserialize(Stream source, Type type)
         {
             var serializer = GetXmlSerializer(type);
@@ -59,8 +60,6 @@ namespace Lokad.Cloud.Storage
         /// <param name="destination">
         /// The destination. 
         /// </param>
-        /// <remarks>
-        /// </remarks>
         public void RepackXml(XElement data, Stream destination)
         {
             using (var compressed = Compress(destination, true))
@@ -133,8 +132,6 @@ namespace Lokad.Cloud.Storage
         /// <returns>
         /// The GZip stream.
         /// </returns>
-        /// <remarks>
-        /// </remarks>
         private static GZipStream Compress(Stream stream, bool leaveOpen)
         {
             return new GZipStream(stream, CompressionMode.Compress, leaveOpen);
@@ -152,8 +149,6 @@ namespace Lokad.Cloud.Storage
         /// <returns>
         /// The GZip stream.
         /// </returns>
-        /// <remarks>
-        /// </remarks>
         private static GZipStream Decompress(Stream stream, bool leaveOpen)
         {
             return new GZipStream(stream, CompressionMode.Decompress, leaveOpen);
@@ -169,13 +164,11 @@ namespace Lokad.Cloud.Storage
         /// Type to perform operation upon 
         /// </param>
         /// <param name="inherit">
-        /// <see cref="MemberInfo.GetCustomAttributes(Type,bool)"/> 
+        /// See <see cref="MemberInfo.GetCustomAttributes(Type,bool)"/> 
         /// </param>
         /// <returns>
         /// Empty array of <typeparamref name="T"/> if there are no attributes 
         /// </returns>
-        /// <remarks>
-        /// </remarks>
         private static T[] GetAttributes<T>(ICustomAttributeProvider target, bool inherit) where T : Attribute
         {
             return target.IsDefined(typeof(T), inherit)
@@ -192,17 +185,12 @@ namespace Lokad.Cloud.Storage
         /// <returns>
         /// The XML object serializer.
         /// </returns>
-        /// <remarks>
-        /// </remarks>
         private static XmlObjectSerializer GetXmlSerializer(Type type)
         {
             // 'false' == do not inherit the attribute
-            if (GetAttributes<DataContractAttribute>(type, false).Length > 0)
-            {
-                return new DataContractSerializer(type);
-            }
-
-            return new NetDataContractSerializer();
+            return GetAttributes<DataContractAttribute>(type, false).Length > 0
+                       ? (XmlObjectSerializer)new DataContractSerializer(type)
+                       : new NetDataContractSerializer();
         }
 
         #endregion

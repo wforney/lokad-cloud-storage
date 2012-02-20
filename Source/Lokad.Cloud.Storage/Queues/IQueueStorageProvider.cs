@@ -16,7 +16,10 @@ namespace Lokad.Cloud.Storage.Queues
     /// Abstraction of the Queue Storage.
     /// </summary>
     /// <remarks>
-    /// This provider represents a <em>logical</em> queue, not the actual Queue Storage. In particular, the provider implementation deals with overflowing messages (that is to say messages larger than 8kb) on its own.
+    /// This provider represents a <em>logical</em> queue, not the actual
+    /// Queue Storage. In particular, the provider implementation deals
+    /// with overflowing messages (that is to say messages larger than 8kb)
+    /// on its own.
     /// </remarks>
     public interface IQueueStorageProvider
     {
@@ -46,13 +49,12 @@ namespace Lokad.Cloud.Storage.Queues
         bool Abandon<T>(T message, TimeSpan timeToLive = default(TimeSpan), TimeSpan delay = default(TimeSpan));
 
         /// <summary>
-        /// Abandon all messages still being processed. This is recommended to call e.g. when forcing a worker to shutting.
+        /// Abandon all messages still being processed. This is recommended to call
+        /// e.g. when forcing a worker to shutting.
         /// </summary>
         /// <returns>
         /// The number of original messages actually deleted. 
         /// </returns>
-        /// <remarks>
-        /// </remarks>
         int AbandonAll();
 
         /// <summary>
@@ -83,19 +85,18 @@ namespace Lokad.Cloud.Storage.Queues
         /// Clear all the messages from the specified queue.
         /// </summary>
         /// <param name="queueName">
-        /// Name of the queue. 
+        /// The name of the queue. 
         /// </param>
-        /// <remarks>
-        /// </remarks>
         void Clear(string queueName);
 
         /// <summary>
         /// Deletes a message being processed from the queue.
         /// </summary>
         /// <typeparam name="T">
+        /// The type.
         /// </typeparam>
         /// <param name="message">
-        /// The message. 
+        /// The message.
         /// </param>
         /// <returns>
         /// <c>True</c> if the message has been deleted. 
@@ -115,23 +116,19 @@ namespace Lokad.Cloud.Storage.Queues
         /// Unique key of the persisted message as returned by ListPersisted. 
         /// </param>
         /// <param name="serializer">
-        /// The serializer. 
+        /// The serializer.
         /// </param>
-        /// <remarks>
-        /// </remarks>
         void DeletePersisted(string storeName, string key, IDataSerializer serializer = null);
 
         /// <summary>
         /// Deletes a queue.
         /// </summary>
         /// <param name="queueName">
-        /// Name of the queue. 
+        /// The name of the queue. 
         /// </param>
         /// <returns>
         /// <c>true</c> if the queue name has been actually deleted. 
         /// </returns>
-        /// <remarks>
-        /// </remarks>
         bool DeleteQueue(string queueName);
 
         /// <summary>
@@ -164,19 +161,19 @@ namespace Lokad.Cloud.Storage.Queues
         /// Maximal number of messages to be retrieved. 
         /// </param>
         /// <param name="visibilityTimeout">
-        /// The visibility timeout, indicating when the not yet deleted message should become visible in the queue again. 
+        /// The visibility timeout, indicating when the not yet deleted message should
+        /// become visible in the queue again.
         /// </param>
         /// <param name="maxProcessingTrials">
-        /// Maximum number of message processing trials, before the message is considered as being poisonous, removed from the queue and persisted to the 'failing-messages' store. 
+        /// Maximum number of message processing trials, before the message is considered as
+        /// being poisonous, removed from the queue and persisted to the 'failing-messages' store.
         /// </param>
         /// <param name="serializer">
-        /// The serializer. 
+        /// The serializer.
         /// </param>
         /// <returns>
         /// Enumeration of messages, possibly empty. 
         /// </returns>
-        /// <remarks>
-        /// </remarks>
         IEnumerable<T> Get<T>(
             string queueName, 
             int count, 
@@ -188,25 +185,22 @@ namespace Lokad.Cloud.Storage.Queues
         /// Gets the approximate number of items in this queue.
         /// </summary>
         /// <param name="queueName">
-        /// Name of the queue. 
+        /// The name of the queue. 
         /// </param>
         /// <returns>
         /// The get approximate count.
         /// </returns>
-        /// <remarks>
-        /// </remarks>
         int GetApproximateCount(string queueName);
 
         /// <summary>
         /// Gets the approximate age of the top message of this queue.
         /// </summary>
         /// <param name="queueName">
-        /// Name of the queue. 
+        /// The name of the queue. 
         /// </param>
         /// <returns>
+		/// A time span.
         /// </returns>
-        /// <remarks>
-        /// </remarks>
         Maybe<TimeSpan> GetApproximateLatency(string queueName);
 
         /// <summary>
@@ -219,27 +213,25 @@ namespace Lokad.Cloud.Storage.Queues
         /// Unique key of the persisted message as returned by ListPersisted. 
         /// </param>
         /// <param name="serializer">
-        /// The serializer. 
+        /// The serializer.
         /// </param>
         /// <returns>
+		/// The persisted message.
         /// </returns>
-        /// <remarks>
-        /// </remarks>
         Maybe<PersistedMessage> GetPersisted(string storeName, string key, IDataSerializer serializer = null);
 
         /// <summary>
         /// Keep the message alive for another period.
         /// </summary>
         /// <typeparam name="T">
+        /// The type of message.
         /// </typeparam>
         /// <param name="message">
-        /// The message. 
+        /// The message.
         /// </param>
         /// <returns>
         /// The new visibility timeout 
         /// </returns>
-        /// <remarks>
-        /// </remarks>
         TimeSpan KeepAlive<T>(T message) where T : class;
 
         /// <summary>
@@ -249,9 +241,8 @@ namespace Lokad.Cloud.Storage.Queues
         /// If <c>null</c> or empty, returns all queues. 
         /// </param>
         /// <returns>
+		/// An enumerable of strings.
         /// </returns>
-        /// <remarks>
-        /// </remarks>
         IEnumerable<string> List(string prefix);
 
         /// <summary>
@@ -261,9 +252,8 @@ namespace Lokad.Cloud.Storage.Queues
         /// Name of the message persistence store. 
         /// </param>
         /// <returns>
+		/// An enumerable of strings.
         /// </returns>
-        /// <remarks>
-        /// </remarks>
         IEnumerable<string> ListPersisted(string storeName);
 
         /// <summary>
@@ -281,8 +271,6 @@ namespace Lokad.Cloud.Storage.Queues
         /// <param name="reason">
         /// Optional reason text on why the message has been taken out of the queue. 
         /// </param>
-        /// <remarks>
-        /// </remarks>
         void Persist<T>(T message, string storeName, string reason);
 
         /// <summary>
@@ -300,8 +288,6 @@ namespace Lokad.Cloud.Storage.Queues
         /// <param name="reason">
         /// Optional reason text on why the messages have been taken out of the queue. 
         /// </param>
-        /// <remarks>
-        /// </remarks>
         void PersistRange<T>(IEnumerable<T> messages, string storeName, string reason);
 
         /// <summary>
@@ -323,7 +309,7 @@ namespace Lokad.Cloud.Storage.Queues
         /// The delay. 
         /// </param>
         /// <param name="serializer">
-        /// The serializer. 
+        /// The serializer.
         /// </param>
         /// <remarks>
         /// If the queue does not exist, it gets created.
@@ -354,7 +340,7 @@ namespace Lokad.Cloud.Storage.Queues
         /// The delay. 
         /// </param>
         /// <param name="serializer">
-        /// The serializer. 
+        /// The serializer.
         /// </param>
         /// <remarks>
         /// If the queue does not exist, it gets created.
@@ -385,7 +371,7 @@ namespace Lokad.Cloud.Storage.Queues
         /// The delay. 
         /// </param>
         /// <param name="serializer">
-        /// The serializer. 
+        /// The serializer.
         /// </param>
         /// <remarks>
         /// If the queue does not exist, it gets created.
@@ -412,8 +398,6 @@ namespace Lokad.Cloud.Storage.Queues
         /// <param name="delay">
         /// The delay. 
         /// </param>
-        /// <remarks>
-        /// </remarks>
         void RestorePersisted(
             string storeName, string key, TimeSpan timeToLive = default(TimeSpan), TimeSpan delay = default(TimeSpan));
 
@@ -476,8 +460,6 @@ namespace Lokad.Cloud.Storage.Queues
         /// <returns>
         /// The revive messages.
         /// </returns>
-        /// <remarks>
-        /// </remarks>
         int ReviveMessages(TimeSpan timeToLive = default(TimeSpan), TimeSpan delay = default(TimeSpan));
 
         #endregion
@@ -486,8 +468,6 @@ namespace Lokad.Cloud.Storage.Queues
     /// <summary>
     /// Persisted message details for inspection and recovery.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     public class PersistedMessage
     {
         #region Public Properties
@@ -495,22 +475,16 @@ namespace Lokad.Cloud.Storage.Queues
         /// <summary>
         ///   XML representation of the message, if possible and supported by the serializer
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         public Maybe<XElement> DataXml { get; internal set; }
 
         /// <summary>
         ///   The number of times the message has been dequeued.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         public int DequeueCount { get; internal set; }
 
         /// <summary>
         ///   Time when the message was inserted into the message queue.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         public DateTimeOffset InsertionTime { get; internal set; }
 
         /// <summary>
@@ -524,36 +498,26 @@ namespace Lokad.Cloud.Storage.Queues
         /// <summary>
         ///   Unique key of the persisted message as returned by ListPersisted.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         public string Key { get; internal set; }
 
         /// <summary>
         ///   Time when the message was persisted and removed from the message queue.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         public DateTimeOffset PersistenceTime { get; internal set; }
 
         /// <summary>
         ///   Identifier of the originating message queue.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         public string QueueName { get; internal set; }
 
         /// <summary>
         ///   Optional reason text why the message was persisted.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         public string Reason { get; internal set; }
 
         /// <summary>
         ///   Name of the message persistence store.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         public string StoreName { get; internal set; }
 
         #endregion
