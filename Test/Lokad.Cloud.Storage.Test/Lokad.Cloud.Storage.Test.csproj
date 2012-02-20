@@ -78,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Blobs\DevBlobStorageTests.cs" />
+    <Compile Include="Blobs\MyBlob.cs" />
     <Compile Include="CloudStorageTests.cs" />
     <Compile Include="CompressedRawFormatterTests.cs" />
     <Compile Include="Documents\AdhocDocumentSetTests.cs" />
@@ -89,6 +90,8 @@
     <Compile Include="Documents\SimpleMyDocumentSet.cs" />
     <Compile Include="Documents\MyDocument.cs" />
     <Compile Include="Documents\CustomMyDocumentSet.cs" />
+    <Compile Include="Queues\MyMessage.cs" />
+    <Compile Include="Queues\MyStruct.cs" />
     <Compile Include="RawFormatterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queues\DevQueueStorageTests.cs" />

@@ -10,6 +10,7 @@ namespace Lokad.Cloud.Storage
     using System.Net;
 
     using Lokad.Cloud.Storage.Azure;
+    using Lokad.Cloud.Storage.Blobs;
     using Lokad.Cloud.Storage.Queues;
     using Lokad.Cloud.Storage.Tables;
 

@@ -16,6 +16,7 @@ namespace Lokad.Cloud.Storage.Azure
     using System.Threading.Tasks;
     using System.Xml.Linq;
 
+    using Lokad.Cloud.Storage.Blobs;
     using Lokad.Cloud.Storage.Instrumentation;
     using Lokad.Cloud.Storage.Instrumentation.Events;
     using Lokad.Cloud.Storage.Queues;

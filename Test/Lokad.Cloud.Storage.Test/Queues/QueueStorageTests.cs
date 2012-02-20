@@ -10,6 +10,7 @@ namespace Lokad.Cloud.Storage.Test.Queues
     using System.Linq;
     using System.Text;
 
+    using Lokad.Cloud.Storage.Blobs;
     using Lokad.Cloud.Storage.Queues;
 
     using NUnit.Framework;
